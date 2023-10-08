@@ -1,6 +1,4 @@
-import argparse
 import os
-import time
 import random
 import numpy as np
 import pandas as pd
@@ -9,12 +7,10 @@ import torch.nn.functional as F
 from PIL import Image
 from torch import nn
 from torch.nn import Linear, functional as F, Dropout
-from torch.optim import lr_scheduler
 from torch.optim.lr_scheduler import CosineAnnealingLR
-from torch.utils.data import DataLoader, Dataset, WeightedRandomSampler
+from torch.utils.data import DataLoader, Dataset
 from torch.utils.tensorboard import SummaryWriter
 from torchvision import models, transforms
-from torchvision.models import Swin_T_Weights
 from Losses.MeanVarianceLoss import MeanVarianceLoss
 from GradualWarmupScheduler import GradualWarmupScheduler
 
@@ -70,7 +66,7 @@ class UTKFaceDataset(Dataset):
         if self.transform is not None:
             img = self.transform(img)
 
-        label = self.y[index]//3 #interval=3
+        label = self.y[index]//3  # interval=3
         levels = [1]*label + [0]*(NUM_CLASSES - 1 - label)
         levels = torch.tensor(levels, dtype=torch.float32)
         sample = {'image': img, 'classification_label': label,
@@ -143,17 +139,16 @@ if __name__ == '__main__':
         def __init__(self):
             super(FeatureExtractionswintransformer, self).__init__()
 
-            model=models.swin_t(pretrained=True)
+            model = models.swin_t(pretrained=True)
             all_layers = list(model.children())
 
             new_model = torch.nn.Sequential(*all_layers[:-1])
-            self.base_net=new_model
+            self.base_net = new_model
 
         def forward(self, input):
-            x=self.base_net(input)
+            x = self.base_net(input)
 
             return x
-
 
     class UnifiedClassificaionAndRegressionAgeModel(nn.Module):
         def __init__(self, num_classes, age_interval, min_age, max_age, device=torch.device("cuda:0")):
