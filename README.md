@@ -9,7 +9,7 @@
 
 Please follow the steps below to use the facial-age-estimation:
 
-1. **Download Dataset**: Download the UTKFace dataset from [here](https://susanqq.github.io/UTKFace/).
+1. **Clone this project and Download Dataset**: Download the UTKFace dataset from [here](https://susanqq.github.io/UTKFace/).
 
 2. **get backbone weight**:
    Run the `swintransformerfacetest.py`.
